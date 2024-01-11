@@ -24,3 +24,24 @@
       ansible.builtin.dnf:  # We are using this dnf as we are using python3 if python2 use yum
         name: nginx
         state: installed
+    - name: Copying expense Configuration File #reverse proxy server
+      ansible.builtin.copy:
+        src: expense.conf
+        dest: /etc/nginx/default.d/expense.conf
+    - name: Deleting the existing App Content
+      ansible.builtin.file:
+        path: /usr/share/nginx/html
+        state: absent
+    - name: Creating a App Directory
+      ansible.builtin.file:
+        path: /usr/share/nginx/html
+        state: Directory
+    - name: Downloading the App content
+      ansible.builtin.get_url:
+        url: https://expense-artifacts.s3.amazonaws.com/frontend.zip
+        dest: /tmp/frontend.zip
+    - name: Extracting Application Content
+      ansible.builtin.unarchive:
+        src: /tmp/frontend.zip
+        dest: /usr/share/nginx/html
+        remote_src: yes
