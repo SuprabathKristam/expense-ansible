@@ -21,6 +21,6 @@
   hosts: all
   tasks:
     - name: Installing Nginx
-      ansible.bultin.dnf:  # We are using this dnf as we are using python3 if python2 use yum
+      ansible.builtin.dnf:  # We are using this dnf as we are using python3 if python2 use yum
         name: nginx
         state: installed
