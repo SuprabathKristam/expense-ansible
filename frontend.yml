@@ -15,3 +15,12 @@
 #systemctl enable nginx &>>$log_file
 #systemctl restart nginx &>>$log_file
 #Stat $?
+
+- name: Setup of Frontend
+  become: true  # This is same to -b in command line we used for getting sudo access
+  hosts: all
+  tasks:
+    - name: Installing Nginx
+      ansible.bultin.dnf:  # We are using this dnf as we are using python3 if python2 use yum
+        name: nginx
+        state: installed
