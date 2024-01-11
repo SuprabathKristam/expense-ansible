@@ -35,7 +35,7 @@
     - name: Creating a App Directory
       ansible.builtin.file:
         path: /usr/share/nginx/html
-        state: Directory
+        state: directory
     - name: Downloading the App content
       ansible.builtin.get_url:
         url: https://expense-artifacts.s3.amazonaws.com/frontend.zip
