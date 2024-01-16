@@ -26,3 +26,26 @@
 #Head "Setting default password"
 #mysql_secure_installation --set-root-pass ${MYSQL_PASSWORD=$1} &>>$log_file
 #Stat $?
+
+- name: MySQL Setup
+  hosts: all
+  become: true
+  tasks:
+    - name: Disable default version of mysql
+      ansible.builtin.shell: dnf module disable mysql -y  # dnf module is not supporting as of now so we are using shell module
+
+    - name: Copy mysql repo file
+      ansible.builtin.copy:
+       src: mysql.repo
+       dest: /etc/yum.repos.d/mysql.repo
+
+    - name: Installing Mysql Server
+      ansible.builtin.dnf:
+        name: mysql-community-server
+        state: installed
+    - name: Restarting mysqld service
+      ansible.builtin.systemd_service:
+        name: mysqld
+        state: restarted
+    - name: Setting default password
+      ansible.builtin.shell: mysql_secure_installation --set-root-pass ExpenseApp@1
