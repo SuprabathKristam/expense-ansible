@@ -118,6 +118,11 @@
         name: mysql
         state: installed
 
+    - name: Installing PyMySql
+      ansible.builtin.dnf:
+        name: python3-PyMySQL.noarch
+        state: installed
+
     - name: Loading Schema
       community.mysql.mysql_db:
         state: import
