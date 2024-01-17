@@ -1,0 +1,40 @@
+- name: Installing Nginx
+  ansible.builtin.dnf:  # We are using this dnf as we are using python3 if python2 use yum
+    name: nginx
+    state: installed
+- name: Copying expense Configuration File #reverse proxy server
+  ansible.builtin.copy:
+    src: expense.conf
+    dest: /etc/nginx/default.d/expense.conf
+- name: Deleting the existing App Content
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+- name: Creating a App Directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+#    - name: Downloading the App content
+#      ansible.builtin.get_url:
+#        url: https://expense-artifacts.s3.amazonaws.com/frontend.zip
+#        dest: /tmp/frontend.zip
+#    - name: Extracting Application Content
+#      ansible.builtin.unarchive:
+#        src: /tmp/frontend.zip
+#        dest: /usr/share/nginx/html
+#        remote_src: yes
+# We can use below module so that we con download and extract in the same module instead using above 2 modules
+- name: Download and extract the app content
+  ansible.builtin.unarchive:
+    src: https://expense-artifacts.s3.amazonaws.com/frontend.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+- name: Start service nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+- name: Enable service Nginx and ensure it is up even after reboot
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true # This should be true so that even after reboot it comes up
+    state: restarted
