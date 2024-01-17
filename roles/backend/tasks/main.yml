@@ -1,0 +1,63 @@
+tasks:
+  - name: Disable default version of NodJs
+    ansible.builtin.shell: dnf module disable nodejs -y
+
+  - name: Enable NodeJs 18 version
+    ansible.builtin.shell: dnf module enable nodejs:18 -y
+
+  - name: Installing NodeJs
+    ansible.builtin.dnf:
+      name: nodejs
+      state: installed
+
+  - name: Configuring backend service
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+  - name: Adding Application user
+    ansible.builtin.user:
+      name: expense
+
+  - name: Removing existing default app content
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+  - name: Creating Application Directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+  - name: Downloading and extracting application content
+    ansible.builtin.unarchive:
+      src: https://expense-artifacts.s3.amazonaws.com/backend.zip
+      dest: /app
+      remote_src: yes
+
+  - name: Downloading dependencies  #using this module as we already have package
+    community.general.npm:
+      path: /app
+
+  - name: Reloading systemd and start backend service
+    ansible.builtin.systemd_service:
+      name: backend
+      enabled: true # This should be true so that even after reboot it comes up
+      state: restarted
+
+  - name: Installing  MySql Clinet
+    ansible.builtin.dnf:
+      name: mysql
+      state: installed
+
+  - name: Installing Python Library for MYSQL (PyMySql) # this is a dependency for the below Loading schema step
+    ansible.builtin.dnf:
+      name: python3-PyMySQL
+      state: installed
+
+  - name: Loading Schema
+    community.mysql.mysql_db:
+      state: import
+      name: all
+      target: /app/schema/backend.sql
+      login_user: root
+      login_password: ExpenseApp@1
+      login_host: mysql-dev.kdevopspractice.online
