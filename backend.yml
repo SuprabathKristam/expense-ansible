@@ -118,7 +118,7 @@
         name: mysql
         state: installed
 
-    - name: Installing PyMySql
+    - name: Installing PyMySql # this is a dependency for the below Loading schema step
       ansible.builtin.dnf:
         name: python3-PyMySQL.noarch
         state: installed
