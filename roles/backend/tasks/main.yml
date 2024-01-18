@@ -1,4 +1,3 @@
-tasks:
   - name: Disable default version of NodJs
     ansible.builtin.shell: dnf module disable nodejs -y
 
