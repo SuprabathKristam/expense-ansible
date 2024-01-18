@@ -1,5 +1,0 @@
-- name: Setup of Frontend
-  become: true  # This is same to -b in command line we used for getting sudo access
-  hosts: all
-  roles:
-    - frontend
