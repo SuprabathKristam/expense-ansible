@@ -1,2 +1,5 @@
 component: frontend
 app_location: /usr/share/nginx/html
+
+
+#Here we are choosing the variable name as app_location just to suite the project there is nothing technical

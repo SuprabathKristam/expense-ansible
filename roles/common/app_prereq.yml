@@ -12,3 +12,5 @@
     src: https://expense-artifacts.s3.amazonaws.com/{{component}}.zip
     dest: "{{ app_location }}"
     remote_src: yes
+
+  #here we choose role name as common just to suite the project there is nothing technical
