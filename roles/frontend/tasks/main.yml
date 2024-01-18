@@ -6,14 +6,10 @@
   ansible.builtin.copy:
     src: expense.conf
     dest: /etc/nginx/default.d/expense.conf
-- name: Deleting the existing App Content
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: absent
-- name: Creating a App Directory
-  ansible.builtin.file:
-    path: /usr/share/nginx/html
-    state: directory
+- name: App Prerequisites
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: app_prereq
 #    - name: Downloading the App content
 #      ansible.builtin.get_url:
 #        url: https://expense-artifacts.s3.amazonaws.com/frontend.zip
@@ -24,11 +20,7 @@
 #        dest: /usr/share/nginx/html
 #        remote_src: yes
 # We can use below module so that we con download and extract in the same module instead using above 2 modules
-- name: Download and extract the app content
-  ansible.builtin.unarchive:
-    src: https://expense-artifacts.s3.amazonaws.com/frontend.zip
-    dest: /usr/share/nginx/html
-    remote_src: yes
+
 - name: Start service nginx
   ansible.builtin.service:
     name: nginx
