@@ -37,10 +37,13 @@
       name: mysql
       state: installed
 
-  - name: Installing Python Library for MYSQL (PyMySql) # this is a dependency for the below Loading schema step
+  - name: Installing Mysql client & Python Library for MYSQL (PyMySql) # this is a dependency for the below Loading schema step
     ansible.builtin.dnf:
-      name: python3-PyMySQL
+      name: "{{ item }}"
       state: installed
+    loop:
+      - mysql
+      - python3-PyMySQL
 
   - name: Loading Schema
     community.mysql.mysql_db:
