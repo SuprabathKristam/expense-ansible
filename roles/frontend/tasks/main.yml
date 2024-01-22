@@ -3,7 +3,7 @@
     name: nginx
     state: installed
 - name: Copying expense Configuration File #reverse proxy server
-  ansible.builtin.copy:
+  ansible.builtin.template:  # Changed copy module to template
     src: expense.conf
     dest: /etc/nginx/default.d/expense.conf
 - name: App Prerequisites

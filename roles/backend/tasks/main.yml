@@ -10,7 +10,7 @@
       state: installed
 
   - name: Configuring backend service
-    ansible.builtin.copy:
+    ansible.builtin.template:  # Changed the module name from copy to templates
       src: backend.service
       dest: /etc/systemd/system/backend.service
   - name: Adding Application user
