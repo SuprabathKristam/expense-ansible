@@ -3,7 +3,7 @@ pipelines:
   deploy:
     group: defaultGroup  # it is just a group in which pipeline will run we can get this info from dashboard
     label_template: ${COUNT}
-    lock_behavior: true # runsingle instance of pipeline at a time
+    lock_behavior: none
     display_order: -1  # Just a default value
     materials:         # git repo details
       ansible:
