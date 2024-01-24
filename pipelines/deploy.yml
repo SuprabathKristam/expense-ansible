@@ -1,0 +1,25 @@
+format_version: 10
+pipelines:
+  deploy:
+    group: defaultGroup  # it is just a group in which pipeline will run we can get this info from dashboard
+    label_template: ${COUNT}
+    lock_behavior: true # runsingle instance of pipeline at a time
+    display_order: -1  # Just a default value
+    materials:         # git repo details
+      ansible:
+        git: https://github.com/SuprabathKristam/expense-ansible.git
+        shallow_clone: false
+        auto_update: true
+        branch: main
+    stages:
+    - DEV:
+        fetch_materials: true  # above given material will be linked here
+        approval:
+          type: manual   # this can be success  to make it automated but we are choosing manual
+        jobs:
+          deployment:
+            timeout: 0
+            tasks:
+            - exec:
+                command: ls -l
+                run_if: passed
