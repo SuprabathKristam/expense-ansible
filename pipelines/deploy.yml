@@ -2,7 +2,7 @@ format_version: 10
 pipelines:
   deploy:
     group: defaultGroup  # it is just a group in which pipeline will run we can get this info from dashboard
-    label_template: ${COUNT}
+    label_template: ${COUNT} # this will count of no. of time job has run
     lock_behavior: none
     display_order: -1  # Just a default value
     materials:         # git repo details
@@ -20,6 +20,4 @@ pipelines:
           deployment:
             timeout: 0
             tasks:
-            - exec:
-                command: ls -l
-                run_if: passed
+            - script: ls -l
