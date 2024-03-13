@@ -29,8 +29,9 @@
   - name: Reloading systemd and start backend service
     ansible.builtin.systemd_service:
       name: backend
-      enabled: true # This should be true so that even after reboot it comes up
+      enabled: yes # This should be true so that even after reboot it comes up
       state: restarted
+      daemon-reload: yes
 
   - name: Installing  MySql Clinet
     ansible.builtin.dnf:
